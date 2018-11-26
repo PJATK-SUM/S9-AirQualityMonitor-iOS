@@ -47,6 +47,8 @@ final class MonitorView: UIView {
         return collectionView
     }()
     
+    private let loader: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
+    
     // MARK: - Inits
     
     init() {
@@ -57,6 +59,10 @@ final class MonitorView: UIView {
         layoutSummaryLabel()
         layoutSummaryCaptionLabel()
         layoutCollectionView()
+        layoutLoader()
+        
+        loader.startAnimating()
+        loader.hidesWhenStopped = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -71,7 +77,7 @@ final class MonitorView: UIView {
         
         NSLayoutConstraint.activate([
             self.dateLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            self.dateLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 44.0),
+            self.dateLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 24.0),
             self.dateLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16.0),
             self.dateLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16.0)
         ])
@@ -106,15 +112,29 @@ final class MonitorView: UIView {
         self.addSubview(self.collectionView)
         
         NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: self.summaryCaptionLabel.bottomAnchor, constant: 16.0),
+            self.collectionView.topAnchor.constraint(equalTo: self.summaryCaptionLabel.bottomAnchor, constant: 36.0),
             self.collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             self.collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             self.collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 32.0)
         ])
     }
     
+    private func layoutLoader() {
+        self.loader.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.loader)
+        
+        NSLayoutConstraint.activate([
+            self.loader.topAnchor.constraint(equalTo: self.dateLabel.bottomAnchor, constant: 16.0),
+            self.loader.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.loader.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            self.loader.bottomAnchor.constraint(equalTo: self.summaryCaptionLabel.topAnchor),
+            self.loader.heightAnchor.constraint(equalToConstant: 50.0)
+        ])
+    }
+    
     func setAirQualitySummary(to airQuality: AirQuality) {
         self.summaryLabel.text = airQuality.rawValue
+        self.loader.stopAnimating()
     }
 }
 

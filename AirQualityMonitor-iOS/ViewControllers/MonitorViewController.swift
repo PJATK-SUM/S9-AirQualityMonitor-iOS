@@ -15,7 +15,10 @@ class MonitorViewController: UIViewController {
     var mainView: MonitorView!
     var airQualityDataProvider: AirQualityDataProvider = AirQualityDataProvider()
     
-    private var measurements: [Measurement] = [Measurement.init(topic: .pressure, value: 1041), Measurement.init(topic: .temperature, value: 21.5)]
+    private var latestMessage: (Topic, Float)?
+    private var topics: [Topic] = [.temperature, .pm2dot5, .humidity, .pm10, .pressure]
+    private var measurements: [Topic: Float?] = [:]
+    
     
     // MARK: - Lifecycle
     
@@ -29,34 +32,46 @@ class MonitorViewController: UIViewController {
         
         airQualityDataProvider.delegate = self
         
+        self.setupCollectionView()
+        self.setupData()
+    }
+    
+    // MARK: - Setup
+    
+    private func setupCollectionView() {
         self.mainView.collectionView.dataSource = self
         self.mainView.collectionView.delegate = self
         self.mainView.collectionView.register(DataCollectionViewCell.self, forCellWithReuseIdentifier: DataCollectionViewCell.identifier)
+    }
+    
+    private func setupData() {
+        topics.forEach { self.measurements[$0] = nil }
     }
     
     // MARK: - AirQualityDataMonitor data handling
     
     private func updateView(with message: String, from topic: Topic) {
         if let value: Float = Float(message) {
-            self.measurements.append(Measurement(topic: topic, value: value))
+            self.measurements[topic] = value
             self.mainView.collectionView.reloadData()
+            self.calculateAirQuality()
         }
     }
     
     func calculateAirQuality() {
         var airQuality: AirQuality = .unknown
         
-        if let pm2dot5: Measurement = self.measurements.first(where: { $0.topic == .pm2dot5 }) {
-            let value: Float = pm2dot5.value
-            if value < 10.0 {
+        if let pm2dot5: Float = self.measurements[.pm2dot5] as? Float, let pm10: Float = self.measurements[.pm10] as? Float {
+            let value: Float = pm2dot5 + pm10
+            if value < 20.0 {
                 airQuality = .veryGood
-            } else if value < 25.0 {
-                airQuality = .fine
             } else if value < 50.0 {
+                airQuality = .fine
+            } else if value < 100.0 {
                 airQuality = .mediocre
-            } else if value < 80.0 {
+            } else if value < 160.0 {
                 airQuality = .bad
-            } else if value >= 80.0 {
+            } else if value >= 160.0 {
                 airQuality = .terrible
             }
             
@@ -85,7 +100,7 @@ extension MonitorViewController: AirQualityDataProviderDelegate {
 
 extension MonitorViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.measurements.count
+        return self.topics.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -93,7 +108,13 @@ extension MonitorViewController: UICollectionViewDataSource {
             let cell: DataCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: DataCollectionViewCell.identifier, for: indexPath) as? DataCollectionViewCell
         else { fatalError() }
         
-        cell.setup(for: measurements[indexPath.item])
+        if let topic = cell.topic {
+            if let value = self.measurements[topic] as? Float {
+                cell.set(value: value)
+            }
+        } else {
+            cell.setup(for: topics[indexPath.item])
+        }
         
         return cell
     }
@@ -102,5 +123,13 @@ extension MonitorViewController: UICollectionViewDataSource {
 extension MonitorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return DataCollectionViewCell.itemSize
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, canMoveItemAt indexPath: IndexPath) -> Bool {
+//        return false
+//    }
+    
+    func collectionView(_ collectionView: UICollectionView, moveItemAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        
     }
 }

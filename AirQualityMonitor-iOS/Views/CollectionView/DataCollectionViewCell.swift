@@ -29,8 +29,6 @@ final class DataCollectionViewCell: UICollectionViewCell {
         label.textColor = Style.Color.darkGray
         label.font = .systemFont(ofSize: 58.0, weight: .medium)
         label.textAlignment = .center
-        label.allowsDefaultTighteningForTruncation = true
-        label.numberOfLines = 0
         
         return label
     }()
@@ -44,6 +42,10 @@ final class DataCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    private let loader: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
+    
+    private(set) var topic: Topic?
+    
     
     // MARK: - Init
     
@@ -53,7 +55,12 @@ final class DataCollectionViewCell: UICollectionViewCell {
         self.layoutTitleLabel()
         self.layoutDataLabel()
         self.layoutUnitLabel()
-//        self.visualSetup()
+        self.layoutLoader()
+        
+        self.loader.startAnimating()
+        self.loader.hidesWhenStopped = true
+        
+        self.visualSetup()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -97,6 +104,20 @@ final class DataCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    private func layoutLoader() {
+        self.loader.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.loader)
+        
+        NSLayoutConstraint.activate([
+            self.loader.topAnchor.constraint(equalTo: self.dataLabel.topAnchor),
+            self.loader.leadingAnchor.constraint(equalTo: self.dataLabel.leadingAnchor),
+            self.loader.trailingAnchor.constraint(equalTo: self.dataLabel.trailingAnchor),
+            self.loader.bottomAnchor.constraint(equalTo: self.dataLabel.bottomAnchor),
+            self.loader.widthAnchor.constraint(equalToConstant: DataCollectionViewCell.itemSize.width),
+            self.loader.heightAnchor.constraint(equalToConstant: 69.5)
+        ])
+    }
+    
     private func visualSetup() {
         self.layer.masksToBounds = false
         self.layer.cornerRadius = 8.0
@@ -112,12 +133,18 @@ final class DataCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Setup
     
-    func setup(for measurement: Measurement) {
-        self.dataLabel.text = String("\(measurement.value)".prefix(4))
-        self.unitLabel.text = measurement.topic.unit
-        self.titleLabel.text = measurement.topic.readableName
-        
-        self.visualSetup()
+    func setup(for topic: Topic) {
+        self.topic = topic
+        self.unitLabel.text = topic.unit
+        self.titleLabel.text = topic.readableName
+    }
+    
+    func set(value: Float?) {
+        guard let value = value else { return }
+        self.dataLabel.text = String("\(value)".prefix(4))
+        self.unitLabel.text = self.topic?.unit
+        self.titleLabel.text = self.topic?.readableName
+        self.loader.stopAnimating()
     }
     
     // MARK: - Reuse
