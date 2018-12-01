@@ -12,8 +12,10 @@ enum Topic: String {
     case humidity = "hum"
     case temperature = "temp"
     case pressure = "press"
-    case all = "#"
+    case allHash = "#"
     case unknown
+    
+    static let all: [Topic] = [.temperature, .pm2dot5, .humidity, .pm10, .pressure]
     
     var path: String {
         return "ziembinski_j/feeds/\(self.rawValue)"
@@ -31,7 +33,7 @@ enum Topic: String {
             return "Temperature"
         case .pressure:
             return "Atmospheric pressure"
-        case .all, .unknown:
+        case .allHash, .unknown:
             return ""
         }
     }
@@ -46,26 +48,18 @@ enum Topic: String {
             return "℃"
         case .pressure:
             return "hPa"
-        case .all, .unknown:
+        case .allHash, .unknown:
             return ""
         }
     }
     
     static func from(path: String) -> Topic {
         guard
-            let pathParts: String = path.components(separatedBy: "/").last,
-            let string: String = pathParts.components(separatedBy: ".").last,
+            let lastPart: String = path.components(separatedBy: "/").last,
+            let string: String = lastPart.components(separatedBy: ".").last,
             let topic: Topic = Topic.init(rawValue: string)
-        else { return .unknown}
+        else { return .unknown }
         
         return topic
     }
 }
-
-//extension Topic: Equatable {
-//    static func == (lhs: Topic, rhs: Topic) -> Bool {
-//        return lhs.rawValue == rhs.rawValue
-//    }
-//}
-//
-//extension Topic: Hashable {}

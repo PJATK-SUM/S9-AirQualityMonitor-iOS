@@ -20,6 +20,8 @@
 		96150508219C7C1F00CEE10C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96150507219C7C1F00CEE10C /* Assets.xcassets */; };
 		9615050B219C7C1F00CEE10C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96150509219C7C1F00CEE10C /* LaunchScreen.storyboard */; };
 		96150514219C7C8D00CEE10C /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96150513219C7C8D00CEE10C /* MonitorView.swift */; };
+		96728DE821B2903D009DAD11 /* FeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96728DE721B2903D009DAD11 /* FeedDataSource.swift */; };
+		96728DEA21B2D225009DAD11 /* Array+Extrensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96728DE921B2D225009DAD11 /* Array+Extrensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,8 @@
 		9615050A219C7C1F00CEE10C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9615050C219C7C1F00CEE10C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		96150513219C7C8D00CEE10C /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
+		96728DE721B2903D009DAD11 /* FeedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataSource.swift; sourceTree = "<group>"; };
+		96728DE921B2D225009DAD11 /* Array+Extrensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extrensions.swift"; sourceTree = "<group>"; };
 		9DD7B31DB1B4BF100DF121B4 /* Pods-AirQualityMonitor-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirQualityMonitor-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirQualityMonitor-iOS/Pods-AirQualityMonitor-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				9614FE8621AACD900073E1C0 /* Data+Extensions.swift */,
+				96728DE921B2D225009DAD11 /* Array+Extrensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -126,11 +131,12 @@
 		961504FF219C7C1E00CEE10C /* AirQualityMonitor-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				9614FE8521AACD6D0073E1C0 /* Extensions */,
 				96150512219C7C7800CEE10C /* ViewControllers */,
 				96150515219C7CA600CEE10C /* Views */,
 				9614FE7D21A18CBD0073E1C0 /* Models */,
+				96728DE621B2900B009DAD11 /* DataSources */,
 				9614FE7A219CA0B90073E1C0 /* Networking */,
+				9614FE8521AACD6D0073E1C0 /* Extensions */,
 				96150500219C7C1E00CEE10C /* AppDelegate.swift */,
 				96150507219C7C1F00CEE10C /* Assets.xcassets */,
 				96150509219C7C1F00CEE10C /* LaunchScreen.storyboard */,
@@ -155,6 +161,14 @@
 				96150513219C7C8D00CEE10C /* MonitorView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		96728DE621B2900B009DAD11 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				96728DE721B2903D009DAD11 /* FeedDataSource.swift */,
+			);
+			path = DataSources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,12 +295,14 @@
 				96150503219C7C1E00CEE10C /* MonitorViewController.swift in Sources */,
 				9614FE8221A5D36C0073E1C0 /* DataCollectionViewCell.swift in Sources */,
 				9614FE7F21A18CC80073E1C0 /* Topic.swift in Sources */,
+				96728DE821B2903D009DAD11 /* FeedDataSource.swift in Sources */,
 				9614FE8921AADA900073E1C0 /* Measurement.swift in Sources */,
 				96150514219C7C8D00CEE10C /* MonitorView.swift in Sources */,
 				96150501219C7C1E00CEE10C /* AppDelegate.swift in Sources */,
 				9614FE8B21AB0D4F0073E1C0 /* DataCollectionViewLayout.swift in Sources */,
 				9614FE8721AACD900073E1C0 /* Data+Extensions.swift in Sources */,
 				9614FE8421AAC17F0073E1C0 /* Style.swift in Sources */,
+				96728DEA21B2D225009DAD11 /* Array+Extrensions.swift in Sources */,
 				9614FE7C219CA0DA0073E1C0 /* AirQualityDataProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

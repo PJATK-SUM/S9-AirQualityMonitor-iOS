@@ -8,7 +8,28 @@
 
 import Foundation
 
-struct Measurement {
+final class Measurement {
     let topic: Topic
-    let value: Float
+    
+    private var values: [Float] = []
+    
+    var value: Float? {
+        if values.isEmpty { return nil }
+        var x: Float = 0.0
+        for v in values { x += v }
+        return x / Float(values.count)
+    }
+    
+    // MARK: - Init
+    
+    init(topic: Topic) {
+        self.topic = topic
+    }
+    
+    // MARK: - Updating data
+    
+    func set(update: Float) {
+        if values.count == 5 { values.remove(at: 0) }
+        values.append(update)
+    }
 }

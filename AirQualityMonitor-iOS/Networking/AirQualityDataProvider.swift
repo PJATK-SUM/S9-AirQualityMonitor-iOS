@@ -10,8 +10,6 @@ import CocoaMQTT
 
 protocol AirQualityDataProviderDelegate: class {
     func didConnect() -> Void
-    func didSubscribe(to topic: Topic) -> Void
-    func didUnsubscribe(from topic: Topic) -> Void
     func didReceiveMessage(_ message: String?, topic: Topic) -> Void
 }
 
@@ -20,6 +18,11 @@ protocol AirQualityDataProviderProtocol {
     func subscribe(to topic: Topic)
     func unsubscribe(from topics: [Topic])
     func unsubscribe(from topic: Topic)
+    
+    func start()
+    func stop()
+    
+    var delegate: AirQualityDataProviderDelegate? { get set }
 }
 
 final class AirQualityDataProvider: AirQualityDataProviderProtocol {
@@ -46,7 +49,14 @@ final class AirQualityDataProvider: AirQualityDataProviderProtocol {
         mqtt.password = Credentials.api_key
         mqtt.keepAlive = 60
         mqtt.delegate = self
+    }
+    
+    func start() {
         mqtt.connect()
+    }
+    
+    func stop() {
+        mqtt.disconnect()
     }
     
     // MARK: - AirQualityDataProviderProtocol
