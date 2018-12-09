@@ -10,6 +10,8 @@ import UIKit
 
 protocol FeedDataSourceDelegate: class {
     func didReceive(update: Float, from topic: Topic)
+    func didDisconnect()
+    func didConnect()
 }
 
 protocol FeedDataSourceProtocol: class {
@@ -83,11 +85,23 @@ final class FeedDataSource: NSObject, FeedDataSourceProtocol {
             self.delegate?.didReceive(update: update, from: topic)
         }
     }
+    
+    // MARK: - Connection
+    
+    func reconnect() {
+        self.dataProvider.stop()
+        self.dataProvider.start()
+    }
 }
 
 extension FeedDataSource: AirQualityDataProviderDelegate {
     func didConnect() {
         self.dataProvider.subscribe(to: .allHash)
+        self.delegate?.didConnect()
+    }
+    
+    func didDisconnect() {
+        self.delegate?.didDisconnect()
     }
     
     func didReceiveMessage(_ message: String?, topic: Topic) {

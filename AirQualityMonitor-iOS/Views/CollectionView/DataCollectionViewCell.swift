@@ -84,7 +84,7 @@ final class DataCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(self.dataLabel)
         
         NSLayoutConstraint.activate([
-            self.dataLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 8.0),
+            self.dataLabel.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 12.0),
             self.dataLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
             self.dataLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
             self.dataLabel.widthAnchor.constraint(equalToConstant: DataCollectionViewCell.itemSize.width)
@@ -97,7 +97,7 @@ final class DataCollectionViewCell: UICollectionViewCell {
         self.contentView.addSubview(self.unitLabel)
         
         NSLayoutConstraint.activate([
-            self.unitLabel.topAnchor.constraint(equalTo: self.dataLabel.bottomAnchor, constant: 17.0),
+            self.unitLabel.topAnchor.constraint(equalTo: self.dataLabel.bottomAnchor, constant: 13.0),
             self.unitLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16.0),
             self.unitLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16.0),
             self.unitLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16.0)
@@ -141,7 +141,11 @@ final class DataCollectionViewCell: UICollectionViewCell {
     
     func set(value: Float?) {
         guard let value = value else { return }
-        self.dataLabel.text = String("\(value)".prefix(4))
+        if topic == .pressure {
+            self.dataLabel.text = "\(Int(value))"
+        } else {
+            self.dataLabel.text = String("\(value)".prefix(4))
+        }
         self.unitLabel.text = self.topic?.unit
         self.titleLabel.text = self.topic?.readableName
         self.loader.stopAnimating()

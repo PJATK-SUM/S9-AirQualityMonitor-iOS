@@ -49,6 +49,9 @@ final class MonitorView: UIView {
     
     private let loader: UIActivityIndicatorView = UIActivityIndicatorView(style: .gray)
     
+    private(set) lazy var connectionStatusAlert: ConnectionStatusAlert = ConnectionStatusAlert()
+    private var connectionStatusAlertBottomConstraint: NSLayoutConstraint!
+    
     // MARK: - Inits
     
     init() {
@@ -60,6 +63,7 @@ final class MonitorView: UIView {
         layoutSummaryCaptionLabel()
         layoutCollectionView()
         layoutLoader()
+        layoutConnectionStatusAlert()
         
         loader.startAnimating()
         loader.hidesWhenStopped = true
@@ -101,7 +105,7 @@ final class MonitorView: UIView {
         
         NSLayoutConstraint.activate([
             self.summaryCaptionLabel.centerXAnchor.constraint(equalTo: self.summaryLabel.centerXAnchor),
-            self.summaryCaptionLabel.topAnchor.constraint(equalTo: self.summaryLabel.bottomAnchor),
+            self.summaryCaptionLabel.topAnchor.constraint(equalTo: self.summaryLabel.bottomAnchor, constant: 2.0),
             self.summaryCaptionLabel.leadingAnchor.constraint(equalTo: self.summaryLabel.leadingAnchor),
             self.summaryCaptionLabel.trailingAnchor.constraint(equalTo: self.summaryLabel.trailingAnchor)
         ])
@@ -132,9 +136,29 @@ final class MonitorView: UIView {
         ])
     }
     
+    private func layoutConnectionStatusAlert() {
+        self.connectionStatusAlert.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(self.connectionStatusAlert)
+        
+        connectionStatusAlertBottomConstraint = connectionStatusAlert.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 30.0)
+        
+        NSLayoutConstraint.activate([
+            self.connectionStatusAlert.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            self.connectionStatusAlert.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            connectionStatusAlertBottomConstraint
+        ])
+    }
+    
     func setAirQualitySummary(to airQuality: AirQuality) {
         self.summaryLabel.text = airQuality.rawValue
         self.loader.stopAnimating()
+    }
+    
+    func connectionAlert(isShown: Bool) {
+        connectionStatusAlertBottomConstraint.constant = isShown ? 0.0 : 30.0
+        UIView.animate(withDuration: 0.1) {
+            self.layoutIfNeeded()
+        }
     }
 }
 

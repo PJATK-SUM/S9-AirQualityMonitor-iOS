@@ -10,6 +10,7 @@ import CocoaMQTT
 
 protocol AirQualityDataProviderDelegate: class {
     func didConnect() -> Void
+    func didDisconnect() -> Void
     func didReceiveMessage(_ message: String?, topic: Topic) -> Void
 }
 
@@ -92,26 +93,22 @@ extension AirQualityDataProvider: CocoaMQTTDelegate {
         self.delegate?.didConnect()
     }
     
-    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topic: String) {
-        self.delegate?.didSubscribe(to: Topic.from(path: topic))
-    }
-    
-    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String) {
-        self.delegate?.didUnsubscribe(from: Topic.from(path: topic))
+    func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {
+        self.delegate?.didDisconnect()
     }
     
     func mqtt(_ mqtt: CocoaMQTT, didReceiveMessage message: CocoaMQTTMessage, id: UInt16) {
         let topic: Topic = Topic.from(path: message.topic)
         guard topic != .unknown else { return }
         
-        let messageBody: String? = message.string
-        self.delegate?.didReceiveMessage(messageBody, topic: topic)
+        self.delegate?.didReceiveMessage(message.string, topic: topic)
     }
     
     func mqttDidPing(_ mqtt: CocoaMQTT) {}
     func mqttDidReceivePong(_ mqtt: CocoaMQTT) {}
-    func mqttDidDisconnect(_ mqtt: CocoaMQTT, withError err: Error?) {}
     
+    func mqtt(_ mqtt: CocoaMQTT, didSubscribeTopic topic: String) {}
+    func mqtt(_ mqtt: CocoaMQTT, didUnsubscribeTopic topic: String) {}
     func mqtt(_ mqtt: CocoaMQTT, didPublishMessage message: CocoaMQTTMessage, id: UInt16) {}
     func mqtt(_ mqtt: CocoaMQTT, didPublishAck id: UInt16) {}
 }

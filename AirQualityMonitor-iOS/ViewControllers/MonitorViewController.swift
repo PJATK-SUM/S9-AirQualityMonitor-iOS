@@ -40,6 +40,7 @@ class MonitorViewController: UIViewController {
         dataSource.delegate = self
         
         setupCollectionView()
+        setupConnectionRetryButton()
     }
     
     // MARK: - Setup
@@ -48,6 +49,14 @@ class MonitorViewController: UIViewController {
         mainView.collectionView.dataSource = dataSource
         mainView.collectionView.delegate = self
         mainView.collectionView.register(DataCollectionViewCell.self, forCellWithReuseIdentifier: DataCollectionViewCell.identifier)
+    }
+    
+    private func setupConnectionRetryButton() {
+        mainView.connectionStatusAlert.retryButton.addTarget(self, action: #selector(retryConnection), for: .touchUpInside)
+    }
+    
+    @objc func retryConnection() {
+        self.dataSource.reconnect()
     }
     
     // MARK: - AirQualityDataMonitor data handling
@@ -62,6 +71,14 @@ extension MonitorViewController: FeedDataSourceDelegate {
     
     func didReceive(update: Float, from topic: Topic) {
         self.updateView(with: update, from: topic)
+    }
+    
+    func didDisconnect() {
+        mainView.connectionAlert(isShown: true)
+    }
+    
+    func didConnect() {
+        mainView.connectionAlert(isShown: false)
     }
 }
 

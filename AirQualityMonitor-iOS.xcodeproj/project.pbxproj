@@ -22,6 +22,7 @@
 		96150514219C7C8D00CEE10C /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96150513219C7C8D00CEE10C /* MonitorView.swift */; };
 		96728DE821B2903D009DAD11 /* FeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96728DE721B2903D009DAD11 /* FeedDataSource.swift */; };
 		96728DEA21B2D225009DAD11 /* Array+Extrensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96728DE921B2D225009DAD11 /* Array+Extrensions.swift */; };
+		96A017C421BD629000607913 /* ConnectionStatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A017C321BD629000607913 /* ConnectionStatusAlert.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		96150513219C7C8D00CEE10C /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
 		96728DE721B2903D009DAD11 /* FeedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataSource.swift; sourceTree = "<group>"; };
 		96728DE921B2D225009DAD11 /* Array+Extrensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extrensions.swift"; sourceTree = "<group>"; };
+		96A017C321BD629000607913 /* ConnectionStatusAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusAlert.swift; sourceTree = "<group>"; };
 		9DD7B31DB1B4BF100DF121B4 /* Pods-AirQualityMonitor-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirQualityMonitor-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirQualityMonitor-iOS/Pods-AirQualityMonitor-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -159,6 +161,7 @@
 			children = (
 				9614FE8021A5D3570073E1C0 /* CollectionView */,
 				96150513219C7C8D00CEE10C /* MonitorView.swift */,
+				96A017C321BD629000607913 /* ConnectionStatusAlert.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 				96150503219C7C1E00CEE10C /* MonitorViewController.swift in Sources */,
 				9614FE8221A5D36C0073E1C0 /* DataCollectionViewCell.swift in Sources */,
 				9614FE7F21A18CC80073E1C0 /* Topic.swift in Sources */,
+				96A017C421BD629000607913 /* ConnectionStatusAlert.swift in Sources */,
 				96728DE821B2903D009DAD11 /* FeedDataSource.swift in Sources */,
 				9614FE8921AADA900073E1C0 /* Measurement.swift in Sources */,
 				96150514219C7C8D00CEE10C /* MonitorView.swift in Sources */,
