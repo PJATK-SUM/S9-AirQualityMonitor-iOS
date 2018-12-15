@@ -32,4 +32,8 @@ final class Measurement {
         if values.count == 5 { values.remove(at: 0) }
         values.append(update)
     }
+    
+    func set(initalValues values: [Float]) {
+        self.values = values
+    }
 }

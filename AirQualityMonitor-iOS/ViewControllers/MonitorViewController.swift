@@ -61,16 +61,27 @@ class MonitorViewController: UIViewController {
     
     // MARK: - AirQualityDataMonitor data handling
     
-    private func updateView(with message: Float, from topic: Topic) {
+    private func updateView() {
         mainView.collectionView.reloadData()
         mainView.setAirQualitySummary(to: dataSource.airQuality)
+    }
+    
+    private func handleError(_ error: Error) {
+        guard let _ = error as? NetworkError else {
+            let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { [weak self] (_) in
+                self?.dataSource.reconnect()
+            }))
+            present(alert, animated: true, completion: nil)
+            return
+        }
     }
 }
 
 extension MonitorViewController: FeedDataSourceDelegate {
     
-    func didReceive(update: Float, from topic: Topic) {
-        self.updateView(with: update, from: topic)
+    func didReceiveUpdate() {
+        DispatchQueue.main.async { self.updateView() }
     }
     
     func didDisconnect() {
@@ -79,6 +90,10 @@ extension MonitorViewController: FeedDataSourceDelegate {
     
     func didConnect() {
         mainView.connectionAlert(isShown: false)
+    }
+    
+    func didReceive(error: Error) {
+        self.handleError(error)
     }
 }
 

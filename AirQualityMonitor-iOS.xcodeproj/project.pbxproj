@@ -23,6 +23,8 @@
 		96728DE821B2903D009DAD11 /* FeedDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96728DE721B2903D009DAD11 /* FeedDataSource.swift */; };
 		96728DEA21B2D225009DAD11 /* Array+Extrensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96728DE921B2D225009DAD11 /* Array+Extrensions.swift */; };
 		96A017C421BD629000607913 /* ConnectionStatusAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A017C321BD629000607913 /* ConnectionStatusAlert.swift */; };
+		96A017C621BD897000607913 /* RemoteReading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96A017C521BD897000607913 /* RemoteReading.swift */; };
+		96FEDB4921C537C200D5927C /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96FEDB4821C537C200D5927C /* NetworkError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +47,8 @@
 		96728DE721B2903D009DAD11 /* FeedDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDataSource.swift; sourceTree = "<group>"; };
 		96728DE921B2D225009DAD11 /* Array+Extrensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extrensions.swift"; sourceTree = "<group>"; };
 		96A017C321BD629000607913 /* ConnectionStatusAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatusAlert.swift; sourceTree = "<group>"; };
+		96A017C521BD897000607913 /* RemoteReading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteReading.swift; sourceTree = "<group>"; };
+		96FEDB4821C537C200D5927C /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		9DD7B31DB1B4BF100DF121B4 /* Pods-AirQualityMonitor-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AirQualityMonitor-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-AirQualityMonitor-iOS/Pods-AirQualityMonitor-iOS.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,7 +84,9 @@
 		9614FE7A219CA0B90073E1C0 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				96A017C521BD897000607913 /* RemoteReading.swift */,
 				9614FE7B219CA0DA0073E1C0 /* AirQualityDataProvider.swift */,
+				96FEDB4821C537C200D5927C /* NetworkError.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -303,6 +309,8 @@
 				9614FE8921AADA900073E1C0 /* Measurement.swift in Sources */,
 				96150514219C7C8D00CEE10C /* MonitorView.swift in Sources */,
 				96150501219C7C1E00CEE10C /* AppDelegate.swift in Sources */,
+				96A017C621BD897000607913 /* RemoteReading.swift in Sources */,
+				96FEDB4921C537C200D5927C /* NetworkError.swift in Sources */,
 				9614FE8B21AB0D4F0073E1C0 /* DataCollectionViewLayout.swift in Sources */,
 				9614FE8721AACD900073E1C0 /* Data+Extensions.swift in Sources */,
 				9614FE8421AAC17F0073E1C0 /* Style.swift in Sources */,

@@ -9,7 +9,8 @@
 import UIKit
 
 protocol FeedDataSourceDelegate: class {
-    func didReceive(update: Float, from topic: Topic)
+    func didReceiveUpdate()
+    func didReceive(error: Error)
     func didDisconnect()
     func didConnect()
 }
@@ -77,15 +78,6 @@ final class FeedDataSource: NSObject, FeedDataSourceProtocol {
         self.dataProvider.start()
     }
     
-    // MARK: - Data handling
-    
-    private func handle(message: String, from topic: Topic) {
-        if let update = Float(message), let measurement = measurements.getFirst(for: topic) {
-            measurement.set(update: update)
-            self.delegate?.didReceive(update: update, from: topic)
-        }
-    }
-    
     // MARK: - Connection
     
     func reconnect() {
@@ -104,8 +96,18 @@ extension FeedDataSource: AirQualityDataProviderDelegate {
         self.delegate?.didDisconnect()
     }
     
-    func didReceiveMessage(_ message: String?, topic: Topic) {
-        if let message = message { self.handle(message: message, from: topic) }
+    func didReceive(update value: Float, for topic: Topic) {
+        measurements.getFirst(for: topic)?.set(update: value)
+        self.delegate?.didReceiveUpdate()
+    }
+    
+    func didReceive(initalValues values: [Float], for topic: Topic) {
+        measurements.getFirst(for: topic)?.set(initalValues: values)
+        self.delegate?.didReceiveUpdate()
+    }
+    
+    func didReceive(error: Error) {
+        self.delegate?.didReceive(error: error)
     }
 }
 

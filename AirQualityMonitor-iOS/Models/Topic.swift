@@ -21,6 +21,10 @@ enum Topic: String {
         return "ziembinski_j/feeds/\(self.rawValue)"
     }
     
+    var requestPath: String {
+        return "ziembinski_j/feeds/air-quality-monitor.\(self.rawValue)"
+    }
+    
     var readableName: String {
         switch self {
         case .pm2dot5:
