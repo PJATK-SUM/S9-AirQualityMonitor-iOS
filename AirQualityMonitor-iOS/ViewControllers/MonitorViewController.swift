@@ -15,6 +15,9 @@ class MonitorViewController: UIViewController {
     var mainView: MonitorView!
     let dataSource: FeedDataSource
     
+    var firstTimeRun: Bool = true
+    var connectionAlertWasShown: Bool = false
+    
     // MARK - Inits
     
     init(dataSource: FeedDataSource = FeedDataSource()) {
@@ -43,6 +46,10 @@ class MonitorViewController: UIViewController {
         setupConnectionRetryButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
+    
     // MARK: - Setup
     
     private func setupCollectionView() {
@@ -59,6 +66,14 @@ class MonitorViewController: UIViewController {
         self.dataSource.reconnect()
     }
     
+    @objc func didBecomeActive() {
+        if !firstTimeRun {
+            self.dataSource.reconnect()
+        } else {
+            firstTimeRun = false
+        }
+    }
+    
     // MARK: - AirQualityDataMonitor data handling
     
     private func updateView() {
@@ -67,11 +82,12 @@ class MonitorViewController: UIViewController {
     }
     
     private func handleError(_ error: Error) {
-        guard let _ = error as? NetworkError else {
+        guard let _ = error as? NetworkError, !connectionAlertWasShown else {
             let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Reconnect", style: .default, handler: { [weak self] (_) in
                 self?.dataSource.reconnect()
             }))
+            connectionAlertWasShown = true
             present(alert, animated: true, completion: nil)
             return
         }
@@ -85,11 +101,11 @@ extension MonitorViewController: FeedDataSourceDelegate {
     }
     
     func didDisconnect() {
-        mainView.connectionAlert(isShown: true)
+        mainView.scheduleConnectionAlert()
     }
     
     func didConnect() {
-        mainView.connectionAlert(isShown: false)
+        mainView.hideConnectionAlert()
     }
     
     func didReceive(error: Error) {

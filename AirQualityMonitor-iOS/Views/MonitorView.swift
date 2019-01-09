@@ -52,6 +52,8 @@ final class MonitorView: UIView {
     private(set) lazy var connectionStatusAlert: ConnectionStatusAlert = ConnectionStatusAlert()
     private var connectionStatusAlertBottomConstraint: NSLayoutConstraint!
     
+    var timer: Timer?
+    
     // MARK: - Inits
     
     init() {
@@ -156,6 +158,23 @@ final class MonitorView: UIView {
     
     func connectionAlert(isShown: Bool) {
         connectionStatusAlertBottomConstraint.constant = isShown ? 0.0 : 30.0
+        UIView.animate(withDuration: 0.1) {
+            self.layoutIfNeeded()
+        }
+    }
+    
+    func scheduleConnectionAlert() {
+        timer = Timer.scheduledTimer(withTimeInterval: 2.5, repeats: false, block: { [weak self] (_) in
+            self?.connectionStatusAlertBottomConstraint.constant = 0.0
+            UIView.animate(withDuration: 0.1) {
+                self?.layoutIfNeeded()
+            }
+        })
+    }
+    
+    func hideConnectionAlert() {
+        timer?.invalidate()
+        connectionStatusAlertBottomConstraint.constant = 30.0
         UIView.animate(withDuration: 0.1) {
             self.layoutIfNeeded()
         }
